@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>우리의 경주, 느리게 걷는 이틀.</title>
+  <style>
+    :root {
+      --cream: #fffaf0;
+      --paper: #fffdf8;
+      --green: #244d3b;
+      --green-dark: #173829;
+      --green-light: #e7f0e8;
+      --orange: #d96b32;
+      --orange-light: #fff0e4;
+      --brown: #654c39;
+      --muted: #6f766f;
+      --line: #e5ded1;
+      --shadow: 0 10px 30px rgba(45, 57, 38, .09);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--green-dark);
+      background: var(--cream);
+      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "Apple SD Gothic Neo",
+        "Noto Sans KR", Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid #f2a15f;
+      outline-offset: 3px;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 28px 0 18px;
+    }
+
+    .topbar,
+    .hero-actions,
+    .section-heading,
+    .check-summary,
+    .share-area,
+    .button-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--orange);
+      font-weight: 800;
+      letter-spacing: .05em;
+      font-size: .88rem;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+      margin: 0;
+      letter-spacing: -.04em;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 10px 0 18px;
+      font-size: clamp(2.1rem, 6vw, 4.5rem);
+      color: var(--green);
+    }
+
+    h2 {
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      color: var(--green);
+    }
+
+    h3 {
+      font-size: 1.32rem;
+      color: var(--green);
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    .lead {
+      max-width: 720px;
+      font-size: 1.16rem;
+      color: var(--brown);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
+      gap: 28px;
+      align-items: center;
+      padding: clamp(28px, 6vw, 68px);
+      border-radius: 28px;
+      background: linear-gradient(135deg, #fffdf7, #f2ead8);
+      box-shadow: var(--shadow);
+      border: 1px solid #eee3d2;
+    }
+
+    .hero-illustration {
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+    }
+
+    .hero-illustration svg {
+      width: 100%;
+      max-width: 430px;
+      height: auto;
+    }
+
+    .illustration-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: .86rem;
+      margin-top: -20px;
+    }
+
+    .button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 16px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      text-decoration: none;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button.primary {
+      color: white;
+      background: var(--green);
+    }
+
+    .button.primary:hover {
+      background: var(--green-dark);
+    }
+
+    .button.secondary {
+      color: var(--green);
+      background: white;
+      border-color: #cfdbc9;
+    }
+
+    .button.orange {
+      color: white;
+      background: var(--orange);
+    }
+
+    .button.small {
+      min-height: 42px;
+      padding: 8px 13px;
+      font-size: .94rem;
+    }
+
+    main {
+      padding: 48px 0 80px;
+    }
+
+    section {
+      margin: 0 0 56px;
+    }
+
+    .section-heading {
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .notice {
+      padding: 16px 18px;
+      border-left: 5px solid var(--orange);
+      border-radius: 12px;
+      color: #65412b;
+      background: var(--orange-light);
+    }
+
+    .notice.green {
+      border-left-color: var(--green);
+      color: var(--green-dark);
+      background: var(--green-light);
+    }
+
+    .summary-grid,
+    .schedule-grid,
+    .place-grid,
+    .prep-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .schedule-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .place-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .prep-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 23px;
+      box-shadow: 0 5px 16px rgba(45, 57, 38, .045);
+    }
+
+    .summary-card {
+      min-height: 130px;
+    }
+
+    .summary-card strong {
+      display: block;
+      margin-top: 7px;
+      color: var(--green);
+      font-size: 1.15rem;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    .day-card {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .day-title {
+      padding: 20px 23px;
+      color: white;
+      background: var(--green);
+    }
+
+    .day-card:nth-child(2) .day-title {
+      background: var(--orange);
+    }
+
+    .day-title h3 {
+      color: white;
+    }
+
+    .day-content {
+      padding: 22px;
+    }
+
+    .timeline {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .timeline li {
+      position: relative;
+      padding: 0 0 24px 34px;
+      border-left: 2px solid #d6e2d7;
+    }
+
+    .timeline li:last-child {
+      padding-bottom: 0;
+      border-left-color: transparent;
+    }
+
+    .timeline li::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: -8px;
+      width: 14px;
+      height: 14px;
+      border: 3px solid var(--cream);
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 0 1px var(--orange);
+    }
+
+    .time {
+      display: block;
+      color: var(--orange);
+      font-size: .91rem;
+      font-weight: 800;
+    }
+
+    .item-title {
+      display: block;
+      margin: 3px 0 5px;
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 4px 4px 0 0;
+      padding: 3px 9px;
+      border-radius: 999px;
+      color: var(--green);
+      background: var(--green-light);
+      font-size: .83rem;
+      font-weight: 700;
+    }
+
+    .undecided {
+      color: #8a4d22;
+      background: #fff0dd;
+    }
+
+    .place-card {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .place-card .button-row {
+      margin-top: auto;
+    }
+
+    .source {
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .source a {
+      color: var(--green);
+      overflow-wrap: anywhere;
+    }
+
+    .check-summary {
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: var(--green-light);
+    }
+
+    .progress {
+      overflow: hidden;
+      width: min(310px, 100%);
+      height: 12px;
+      border-radius: 99px;
+      background: #d3dfd4;
+    }
+
+    .progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--orange);
+      transition: width .2s ease;
+    }
+
+    .prep-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      cursor: pointer;
+    }
+
+    .prep-card input {
+      flex: 0 0 auto;
+      width: 23px;
+      height: 23px;
+      margin-top: 3px;
+      accent-color: var(--green);
+    }
+
+    .prep-card.checked .prep-name {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .prep-id {
+      display: block;
+      color: var(--orange);
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    .share-area {
+      justify-content: space-between;
+      padding: 22px;
+      border-radius: var(--radius);
+      color: white;
+      background: var(--green);
+    }
+
+    .share-area h3 {
+      color: white;
+    }
+
+    .share-area p {
+      color: #e5f0e5;
+      margin: 0;
+    }
+
+    #shareFallback {
+      display: none;
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    #shareUrl {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #b9c8b9;
+      border-radius: 9px;
+      font: inherit;
+      color: var(--green-dark);
+    }
+
+    footer {
+      padding: 28px 0 40px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .91rem;
+    }
+
+    .print-only {
+      display: none;
+    }
+
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-illustration {
+        order: -1;
+        min-height: 190px;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        font-size: 17px;
+      }
+
+      .page {
+        width: min(100% - 24px, 1120px);
+      }
+
+      header {
+        padding-top: 18px;
+      }
+
+      .hero {
+        padding: 25px 19px;
+        border-radius: 20px;
+      }
+
+      .hero-illustration {
+        min-height: 145px;
+      }
+
+      .summary-grid,
+      .schedule-grid,
+      .place-grid,
+      .prep-grid {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        padding-top: 35px;
+      }
+
+      .card {
+        padding: 19px;
+      }
+
+      .day-card {
+        padding: 0;
+      }
+
+      .day-content {
+        padding: 19px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .hero-actions .button,
+      .button-row .button {
+        width: 100%;
+      }
+
+      .share-area {
+        align-items: stretch;
+      }
+
+      .share-area .button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      @page {
+        margin: 15mm;
+      }
+
+      body {
+        color: #111;
+        background: white;
+        font-size: 11pt;
+      }
+
+      .page {
+        width: 100%;
+      }
+
+      header {
+        padding-top: 0;
+      }
+
+      .hero {
+        display: block;
+        padding: 0 0 18px;
+        box-shadow: none;
+        border: 0;
+        background: white;
+      }
+
+      .hero-illustration,
+      .hero-actions,
+      .share-area,
+      .button,
+      .progress,
+      .check-summary .label {
+        display: none !important;
+      }
+
+      h1 {
+        font-size: 28pt;
+      }
+
+      h2 {
+        font-size: 18pt;
+      }
+
+      section {
+        margin-bottom: 28px;
+        break-inside: avoid;
+      }
+
+      .summary-grid,
+      .schedule-grid,
+      .place-grid,
+      .prep-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .card,
+      .day-card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      .day-content {
+        padding: 15px;
+      }
+
+      .print-only {
+        display: inline;
+      }
+
+      .prep-card {
+        padding: 11px;
+      }
+
+      .prep-card input {
+        display: none;
+      }
+
+      .prep-card::before {
+        content: "□";
+        margin-right: 5px;
+        font-size: 16pt;
+      }
+
+      .prep-card.checked::before {
+        content: "✓";
+      }
+
+      .prep-card.checked .prep-name {
+        color: #111;
+        text-decoration: none;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .source a {
+        overflow-wrap: anywhere;
+      }
+
+      footer {
+        padding-bottom: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="topbar">
+        <span class="eyebrow">FAMILY TRIP · GYEONGJU</span>
+        <span class="tag">1박 2일</span>
+        <span class="tag">자가용</span>
+        <span class="tag">현지 산책</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <span class="eyebrow">우리 가족의 천천한 여행 기록</span>
+          <h1 id="page-title">우리의 경주,<br>느리게 걷는 이틀.</h1>
+          <p class="lead">
+            성인 2명과 초등학생 1명이 함께하는 경주 여행입니다.
+            날짜와 숙소, 예산은 아직 정하지 않고, 걷고 쉬며 둘러보는 계획만 담았습니다.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#schedule">일정 살펴보기</a>
+            <button class="button secondary" type="button" id="printButton">인쇄·PDF 저장</button>
+          </div>
+        </div>
+
+        <div class="hero-illustration" aria-label="실제 사진이 아닌 창작 SVG 풍경">
+          <svg viewBox="0 0 460 290" role="img" aria-labelledby="svgTitle svgDesc">
+            <title id="svgTitle">경주를 상징하는 창작 풍경</title>
+            <desc id="svgDesc">초록 언덕과 나무, 기와 지붕을 표현한 일러스트입니다.</desc>
+            <rect width="460" height="290" rx="24" fill="#f8e8c9"/>
+            <circle cx="355" cy="72" r="38" fill="#e8a154"/>
+            <path d="M0 220 Q95 155 190 218 T460 200 V290 H0Z" fill="#79956c"/>
+            <path d="M0 245 Q125 185 245 240 T460 228 V290 H0Z" fill="#466b4e"/>
+            <path d="M100 176 Q172 115 245 176 V222 H100Z" fill="#9b603e"/>
+            <path d="M88 178 Q173 91 258 178" fill="none" stroke="#654c39" stroke-width="12"/>
+            <path d="M110 179 H245 M130 151 H226 M150 126 H207" stroke="#f3d9a9" stroke-width="7"/>
+            <path d="M66 236 C67 181 72 157 91 138 C83 183 94 193 99 236Z" fill="#315c42"/>
+            <circle cx="81" cy="138" r="28" fill="#3d7650"/>
+            <circle cx="108" cy="151" r="25" fill="#4e8159"/>
+            <path d="M318 231 C320 184 337 170 349 145 C348 191 359 204 363 231Z" fill="#315c42"/>
+            <circle cx="346" cy="139" r="31" fill="#497952"/>
+            <circle cx="374" cy="154" r="25" fill="#5b895d"/>
+            <path d="M270 250 Q305 236 340 250" fill="none" stroke="#e7c894" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+          <div class="illustration-note">실제 장소 사진이 아닌 창작 SVG 일러스트입니다.</div>
+        </div>
+      </section>
+
+      <section aria-labelledby="summary-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="summary-title">여행 한눈에 보기</h2>
+            <p>확정된 내용과 아직 정하지 않은 내용을 구분했습니다.</p>
+          </div>
+        </div>
+
+        <div class="summary-grid">
+          <div class="card summary-card">
+            <span class="label">여행 날짜</span>
+            <strong class="tag undecided">미정</strong>
+          </div>
+          <div class="card summary-card">
+            <span class="label">숙소</span>
+            <strong class="tag undecided">미정</strong>
+          </div>
+          <div class="card summary-card">
+            <span class="label">예산</span>
+            <strong class="tag undecided">미정</strong>
+          </div>
+          <div class="card summary-card">
+            <span class="label">여행 구성</span>
+            <strong>성인 2명 · 초등학생 1명</strong>
+          </div>
+        </div>
+
+        <div class="notice" style="margin-top:18px;">
+          <strong>계획 안내:</strong>
+          아래 시간과 순서는 여행 계획이며 예약 내용이 아닙니다.
+          실제 운영 여부, 가격, 이동 상황은 방문 전에 별도로 확인해 주세요.
+        </div>
+      </section>
+
+      <section id="schedule" aria-labelledby="schedule-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="schedule-title">날짜별 일정</h2>
+            <p>걷고, 먹고, 쉬는 흐름을 우선한 방문 순서입니다.</p>
+          </div>
+        </div>
+
+        <div class="schedule-grid">
+          <article class="card day-card">
+            <div class="day-title">
+              <h3>첫째 날 · 교촌마을에서 쉬어가기</h3>
+            </div>
+            <div class="day-content">
+              <ol class="timeline">
+                <li>
+                  <span class="time">오전 · 계획</span>
+                  <span class="item-title">교촌마을 산책</span>
+                  <p class="muted">한옥마을을 천천히 걷고 주변 풍경을 살펴봅니다.</p>
+                </li>
+                <li>
+                  <span class="time">점심 · 계획</span>
+                  <span class="item-title">도솔마을</span>
+                  <p class="muted">한식과 한옥 분위기를 원하는 가족이 선택한 예시 식당입니다.</p>
+                </li>
+                <li>
+                  <span class="time">오후 · 계획</span>
+                  <span class="item-title">황남빵 경주 본점 간식과 휴식</span>
+                  <p class="muted">간식을 먹고 잠시 쉬어갑니다.</p>
+                </li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="card day-card">
+            <div class="day-title">
+              <h3>둘째 날 · 박물관 후 귀가</h3>
+            </div>
+            <div class="day-content">
+              <ol class="timeline">
+                <li>
+                  <span class="time">오전 · 계획</span>
+                  <span class="item-title">국립경주박물관</span>
+                  <p class="muted">전시를 살펴보며 여행의 마지막 오전을 보냅니다.</p>
+                </li>
+                <li>
+                  <span class="time">점심 · 미정</span>
+                  <span class="item-title">점심 식당 미정</span>
+                  <p class="muted">식당은 임의로 정하지 않았습니다.</p>
+                </li>
+                <li>
+                  <span class="time">이후 · 계획</span>
+                  <span class="item-title">귀가</span>
+                  <p class="muted">자가용으로 귀가합니다. 실제 도로 경로와 시간은 계산하지 않습니다.</p>
+                </li>
+              </ol>
+            </div>
+          </article>
+        </div>
+
+        <div class="notice" style="margin-top:18px;">
+          <strong>우천 시 대안:</strong>
+          국립경주박물관을 첫째 날 일정으로 옮기고, 교촌마을 산책은 날씨를 보아 조정합니다.
+          박물관 운영 여부와 전시 일정은 방문 전에 별도로 확인해 주세요.
+        </div>
+      </section>
+
+      <section aria-labelledby="places-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="places-title">방문 장소와 식사</h2>
+            <p>지도 버튼은 Google 지도 외부 링크만 엽니다.</p>
+          </div>
+        </div>
+
+        <div class="place-grid">
+          <article class="card place-card">
+            <div>
+              <span class="tag">산책</span>
+              <h3>교촌마을</h3>
+              <p>첫날 오전에 걷는 장소입니다. 장소 자료를 바탕으로 계획했습니다.</p>
+            </div>
+            <div class="button-row">
+              <a class="button primary small map-link"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 data-place="경주 교촌한옥마을"
+                 href="https://www.google.com/maps/search/?api=1&query=%EA%B2%BD%EC%A3%BC%20%EA%B5%90%EC%B4%8C%ED%95%9C%EC%98%A5%EB%A7%88%EC%9D%84">
+                교촌마을 지도 보기
+              </a>
+              <a class="button secondary small map-link"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 data-place="경주 교촌한옥마을"
+                 href="https://www.google.com/maps/dir/?api=1&destination=%EA%B2%BD%EC%A3%BC%20%EA%B5%90%EC%B4%8C%ED%95%9C%EC%98%A5%EB%A7%88%EC%9D%84">
+                길찾기
+              </a>
+            </div>
+            <div class="source">
+              장소 자료:
+              <a href="https://www.gyeongju.go.kr/design/tour2019/file/tourMap/tourMap2_250821.pdf"
+                 target="_blank" rel="noopener noreferrer">경주시 관광지도 PDF</a>
+            </div>
+          </article>
+
+          <article class="card place-card">
+            <div>
+              <span class="tag">점심 · 선택한 예시</span>
+              <h3>도솔마을</h3>
+              <p>
+                한식 메뉴와 대릉원 인근 위치, 입구 단차 안내를 확인하여
+                한식과 한옥 분위기를 원하는 가족이 선택한 예시입니다.
+              </p>
+              <p class="muted">
+                가격·휴무·아이에게 맞는 메뉴는 방문 전에 확인합니다.
+              </p>
+            </div>
+            <div class="button-row">
+              <a class="button primary small map-link"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 data-place="경주 황남동 도솔마을"
+                 href="https://www.google.com/maps/search/?api=1&query=%EA%B2%BD%EC%A3%BC%20%ED%99%A9%EB%82%A8%EB%8F%99%20%EB%8F%84%EC%86%94%EB%A7%88%EC%9D%84">
+                도솔마을 지도 보기
+              </a>
+              <a class="button secondary small map-link"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 data-place="경주 황남동 도솔마을"
+                 href="https://www.google.com/maps/dir/?api=1&destination=%EA%B2%BD%EC%A3%BC%20%ED%99%A9%EB%82%A8%EB%8F%99%20%EB%8F%84%EC%86%94%EB%A7%88%EC%9D%84">
+                길찾기
+              </a>
+            </div>
+            <div class="source">
+              출처:
+              <a href="https://korean.visitkorea.or.kr/detail/ms_detail.do?cotid=d06abea6-281a-4f99-8dc0-07aca9ec1b05"
+                 target="_blank" rel="noopener noreferrer">한국관광공사 관광정보</a><br>
+              자료 확인일: 2026.10.01
+            </div>
+          </article>
+
+          <article class="card place-card">
+            <div>
+              <span class="tag">간식 · 휴식</span>
+              <h3>황남빵 경주 본점</h3>
+              <p>주소: 경주시 태종로 783</p>
+              <p class="muted">
+                가격·구매 수량·방문일 영업 여부는 추가 확인합니다.
+              </p>
+            </div>
+            <div class="button-row">
+              <a class="button primary small map-link"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 data-place="황남빵 경주 본점 경주시 태종로 783"
+                 href="https://www.google.com/maps/search/?api=1&query=%ED%99%A9%EB%82%A8%EB%B9%B5%20%EA%B2%BD%EC%A3%BC%20%EB%B3%B8%EC%A0%90%20%EA%B2%BD%EC%A3%BC%EC%8B%9C%20%ED%83%9C%EC%A2%85%EB%A1%9C%20783">
+                황남빵 본점 지도 보기
+              </a>
+              <a class="button secondary small map-link"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 data-place="황남빵 경주 본점 경주시 태종로 783"
+                 href="https://www.google.com/maps/dir/?api=1&destination=%ED%99%A9%EB%82%A8%EB%B9%B5%20%EA%B2%BD%EC%A3%BC%20%EB%B3%B8%EC%A0%90%20%EA%B2%BD%EC%A3%BC%EC%8B%9C%20%ED%83%9C%EC%A2%85%EB%A1%9C%20783">
+                길찾기
+              </a>
+            </div>
+            <div class="source">
+              공식 안내:
+              <a href="https://m.hwangnam.co.kr/index.html"
+                 target="_blank" rel="noopener noreferrer">황남빵 공식 안내</a>
+            </div>
+          </article>
+
+          <article class="card place-card">
+            <div>
+              <span class="tag">둘째 날 오전</span>
+              <h3>국립경주박물관</h3>
+              <p>주소: 경주시 일정로 186</p>
+              <p class="muted">
+                우천 시 첫째 날로 옮길 수 있는 대안입니다.
+                운영 여부는 별도 확인합니다.
+              </p>
+            </div>
+            <div class="button-row">
+              <a class="button primary small map-link"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 data-place="국립경주박물관 경주시 일정로 186"
+                 href="https://www.google.com/maps/search/?api=1&query=%EA%B5%AD%EB%A6%BD%EA%B2%BD%EC%A3%BC%EB%B0%95%EB%AC%BC%EA%B4%80%20%EA%B2%BD%EC%A3%BC%EC%8B%9C%20%EC%9D%BC%EC%A0%95%EB%A1%9C%20186">
+                박물관 지도 보기
+              </a>
+              <a class="button secondary small map-link"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 data-place="국립경주박물관 경주시 일정로 186"
+                 href="https://www.google.com/maps/dir/?api=1&destination=%EA%B5%AD%EB%A6%BD%EA%B2%BD%EC%A3%BC%EB%B0%95%EB%AC%BC%EA%B4%80%20%EA%B2%BD%EC%A3%BC%EC%8B%9C%20%EC%9D%BC%EC%A0%95%EB%A1%9C%20186">
+                길찾기
+              </a>
+            </div>
+            <div class="source">
+              장소 자료:
+              <a href="https://gyeongju.museum.go.kr/kor/html/sub01/0102.html"
+                 target="_blank" rel="noopener noreferrer">국립경주박물관 안내</a><br>
+              자료 확인일: 2026.10.01
+            </div>
+          </article>
+        </div>
+
+        <div class="notice green" style="margin-top:18px;">
+          Google 지도 버튼을 누르면 새 탭에서 지도가 열립니다.
+          이 페이지는 실제 도로 경로·이동시간을 계산하거나 보장하지 않습니다.
+          길찾기에서 출발지는 Google 지도에서 직접 선택해 주세요.
+        </div>
+      </section>
+
+      <section aria-labelledby="check-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="check-title">준비물 체크</h2>
+            <p>체크 상태는 이 브라우저에만 저장됩니다.</p>
+          </div>
+          <button class="button secondary small" type="button" id="resetButton">체크 초기화</button>
+        </div>
+
+        <div class="check-summary">
+          <div>
+            <strong id="checkText">준비 완료 0/8 · 0%</strong>
+            <span class="print-only"> · 인쇄 시 현재 상태가 표시됩니다.</span>
+          </div>
+          <div class="progress" aria-label="준비물 진행률">
+            <span id="progressBar"></span>
+          </div>
+        </div>
+
+        <div id="storageNotice" class="notice" hidden></div>
+
+        <div class="prep-grid">
+          <label class="card prep-card" data-id="p01">
+            <input type="checkbox" aria-label="개인 편한 신발">
+            <span><span class="prep-id">p01 · 개인</span><span class="prep-name">편한 신발</span></span>
+          </label>
+          <label class="card prep-card" data-id="p02">
+            <input type="checkbox" aria-label="개인 겉옷">
+            <span><span class="prep-id">p02 · 개인</span><span class="prep-name">겉옷</span></span>
+          </label>
+          <label class="card prep-card" data-id="p03">
+            <input type="checkbox" aria-label="공통 충전기">
+            <span><span class="prep-id">p03 · 공통</span><span class="prep-name">충전기</span></span>
+          </label>
+          <label class="card prep-card" data-id="p04">
+            <input type="checkbox" aria-label="공통 보조배터리">
+            <span><span class="prep-id">p04 · 공통</span><span class="prep-name">보조배터리</span></span>
+          </label>
+          <label class="card prep-card" data-id="p05">
+            <input type="checkbox" aria-label="개인 물병">
+            <span><span class="prep-id">p05 · 개인</span><span class="prep-name">물병</span></span>
+          </label>
+          <label class="card prep-card" data-id="p06">
+            <input type="checkbox" aria-label="활동 접이식 우산">
+            <span><span class="prep-id">p06 · 활동</span><span class="prep-name">접이식 우산</span></span>
+          </label>
+          <label class="card prep-card" data-id="p07">
+            <input type="checkbox" aria-label="공통 휴지 물티슈">
+            <span><span class="prep-id">p07 · 공통</span><span class="prep-name">휴지·물티슈</span></span>
+          </label>
+          <label class="card prep-card" data-id="p08">
+            <input type="checkbox" aria-label="개인 세면도구">
+            <span><span class="prep-id">p08 · 개인</span><span class="prep-name">세면도구</span></span>
+          </label>
+        </div>
+
+        <p class="muted" style="margin-top:15px;">
+          저장 내용은 사람·기기·브라우저별로 다르며 다른 가족과 동기화되지 않습니다.
+          로컬 파일(file:) 환경에서는 저장이 보장되지 않을 수 있으므로 게시 주소에서 확인해 주세요.
+        </p>
+      </section>
+
+      <section aria-labelledby="share-title">
+        <div class="share-area">
+          <div>
+            <h3 id="share-title">가족과 공유하거나 인쇄하기</h3>
+            <p>공유 링크는 공개될 수 있으므로 가족만 접근하는 비공개 공간이 아닙니다.</p>
+          </div>
+          <div class="button-row">
+            <button class="button orange" type="button" id="shareButton">현재 페이지 공유</button>
+            <button class="button secondary" type="button" id="printButton2">인쇄·PDF 저장</button>
+          </div>
+          <div id="shareFallback">
+            <label for="shareUrl">복사할 주소</label>
+            <input id="shareUrl" type="text" readonly>
+            <p style="margin-top:8px;">주소를 선택한 뒤 Ctrl+C를 눌러 복사해 주세요.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        자료 확인일: 2026.10.01 · 실시간 자동 갱신 정보가 아닙니다.
+        방문 전 운영 여부, 가격, 휴무, 메뉴, 이동 상황을 다시 확인해 주세요.
+      </p>
+      <p>
+        이 페이지는 확정된 여행 내용을 보여주는 기록용 안내 페이지이며,
+        맛집을 새로 검색하거나 추천하지 않습니다.
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var STORAGE_KEY = "gyeongju-slow-trip-2026-preparation-v1";
+      var ITEM_IDS = ["p01", "p02", "p03", "p04", "p05", "p06", "p07", "p08"];
+      var checkboxes = document.querySelectorAll(".prep-card input");
+      var storageNotice = document.getElementById("storageNotice");
+      var storageAvailable = true;
+
+      function showStorageNotice(message) {
+        storageNotice.hidden = false;
+        storageNotice.textContent = message;
+      }
+
+      function readSavedState() {
+        try {
+          var raw = window.localStorage.getItem(STORAGE_KEY);
+          if (!raw) return {};
+          var parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+            throw new Error("잘못된 저장 형식");
+          }
+          var clean = {};
+          ITEM_IDS.forEach(function (id) {
+            if (parsed[id] === true) clean[id] = true;
+          });
+          return clean;
+        } catch (error) {
+          storageAvailable = false;
+          showStorageNotice(
+            "이 브라우저의 저장 내용을 읽지 못했습니다. 체크와 인쇄는 계속 사용할 수 있지만 새로고침 후 상태가 유지되지 않을 수 있습니다."
+          );
+          return {};
+        }
+      }
+
+      function saveState() {
+        var state = {};
+        checkboxes.forEach(function (checkbox) {
+          var card = checkbox.closest(".prep-card");
+          if (checkbox.checked && ITEM_IDS.indexOf(card.dataset.id) !== -1) {
+            state[card.dataset.id] = true;
+          }
+        });
+
+        try {
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (error) {
+          storageAvailable = false;
+          showStorageNotice(
+            "체크 상태를 저장하지 못했습니다. 체크와 인쇄는 계속 작동하지만 새로고침 후 상태가 유지되지 않을 수 있습니다."
+          );
+        }
+      }
+
+      function updateDisplay() {
+        var checked = 0;
+        checkboxes.forEach(function (checkbox) {
+          var card = checkbox.closest(".prep-card");
+          card.classList.toggle("checked", checkbox.checked);
+          if (checkbox.checked) checked += 1;
+        });
+
+        var total = ITEM_IDS.length;
+        var percent = total === 0 ? 0 : Math.round((checked / total) * 100);
+        document.getElementById("checkText").textContent =
+          "준비 완료 " + checked + "/" + total + " · " + percent + "%";
+        document.getElementById("progressBar").style.width = percent + "%";
+      }
+
+      var savedState = readSavedState();
+      checkboxes.forEach(function (checkbox) {
+        var card = checkbox.closest(".prep-card");
+        checkbox.checked = savedState[card.dataset.id] === true;
+        checkbox.addEventListener("change", function () {
+          updateDisplay();
+          saveState();
+        });
+      });
+      updateDisplay();
+
+      document.getElementById("resetButton").addEventListener("click", function () {
+        var confirmed = window.confirm("이 여행의 준비물 체크 상태를 모두 초기화할까요?");
+        if (!confirmed) return;
+
+        checkboxes.forEach(function (checkbox) {
+          checkbox.checked = false;
+        });
+        updateDisplay();
+
+        try {
+          window.localStorage.removeItem(STORAGE_KEY);
+        } catch (error) {
+          showStorageNotice(
+            "초기화 후 저장 상태를 확인하지 못했습니다. 현재 화면의 체크 상태는 초기화되었습니다."
+          );
+        }
+      });
+
+      document.querySelectorAll(".map-link").forEach(function (link) {
+        link.addEventListener("click", function () {
+          var place = link.dataset.place || "목적지";
+          window.setTimeout(function () {
+            window.alert(place + " 지도를 새 탭에서 엽니다. 실제 경로와 소요시간은 Google 지도에서 확인해 주세요.");
+          }, 0);
+        });
+      });
+
+      function printPage() {
+        window.print();
+      }
+
+      document.getElementById("printButton").addEventListener("click", printPage);
+      document.getElementById("printButton2").addEventListener("click", printPage);
+
+      document.getElementById("shareButton").addEventListener("click", function () {
+        var url = window.location.href;
+        var fallback = document.getElementById("shareFallback");
+        var input = document.getElementById("shareUrl");
+
+        if (window.location.protocol === "file:") {
+          fallback.style.display = "block";
+          input.value = url;
+          input.focus();
+          input.select();
+          window.alert("현재 파일은 로컬 파일입니다. 먼저 GitHub Pages 등에 게시한 뒤 게시 주소를 공유해 주세요.");
+          return;
+        }
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(url).then(function () {
+            window.alert("현재 페이지 주소를 복사했습니다.");
+          }).catch(function () {
+            fallback.style.display = "block";
+            input.value = url;
+            input.focus();
+            input.select();
+            window.alert("자동 복사 권한이 없어 주소를 선택했습니다. Ctrl+C로 복사해 주세요.");
+          });
+        } else {
+          fallback.style.display = "block";
+          input.value = url;
+          input.focus();
+          input.select();
+          window.alert("자동 복사를 사용할 수 없습니다. 주소를 선택한 뒤 Ctrl+C로 복사해 주세요.");
+        }
+      });
+    }());
+  </script>
+</body>
+</html>
